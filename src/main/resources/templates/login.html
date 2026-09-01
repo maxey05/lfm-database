@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign in · LFM Database</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body class="centered">
+    <form class="card login" th:action="@{/login}" method="post">
+        <h1>LFM Database</h1>
+
+        <p class="alert error" th:if="${param.error}">Wrong username or password.</p>
+        <p class="alert ok" th:if="${param.logout}">You have been signed out.</p>
+
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" autocomplete="username" autofocus required>
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+
+        <button type="submit">Sign in</button>
+    </form>
+</body>
+</html>
