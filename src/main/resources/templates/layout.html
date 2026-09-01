@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:fragment="page(title, content)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title} + ' · LFM Database'">LFM Database</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" th:href="@{/people}">LFM Database</a>
+        <div class="session" sec:authorize="isAuthenticated()">
+            <span class="who" sec:authentication="name">user</span>
+            <span class="role" th:each="authority : ${#authentication.authorities}"
+                  th:text="${#strings.replace(authority.authority, 'ROLE_', '')}">ROLE</span>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit">Sign out</button>
+            </form>
+        </div>
+    </header>
+
+    <main th:replace="${content}">
+        <p>Page content goes here.</p>
+    </main>
+</body>
+</html>
