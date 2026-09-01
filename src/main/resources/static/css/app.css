@@ -146,3 +146,18 @@ th {
 tbody tr:last-child td { border-bottom: none; }
 
 .empty { color: var(--muted); }
+
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 16px;
+    font-size: 14px;
+    color: var(--muted);
+}
+
+.pagination button {
+    margin-top: 0;
+    padding: 6px 14px;
+    font-size: 14px;
+}
