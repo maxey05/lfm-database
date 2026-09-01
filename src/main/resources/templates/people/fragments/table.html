@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="table" id="people-table">
+
+    <p class="empty" th:if="${peoplePage.empty}">No records yet.</p>
+
+    <table th:unless="${peoplePage.empty}">
+        <thead>
+            <tr>
+                <th>Complete Name</th>
+                <th>Email</th>
+                <th>Contact Number</th>
+                <th>Gender</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="person : ${peoplePage.content}">
+                <td th:text="${person.completeName}">Name</td>
+                <td th:text="${person.email}">Email</td>
+                <td th:text="${person.contactNumber}">Contact</td>
+                <td th:text="${person.gender}">Gender</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <nav class="pagination" th:if="${peoplePage.totalPages gt 1}">
+        <button type="button"
+                th:if="${peoplePage.hasPrevious()}"
+                th:attr="hx-get=@{/people/table(page=${peoplePage.number - 1})}"
+                hx-target="#people-table" hx-swap="outerHTML" hx-push-url="true">Previous</button>
+        <span th:text="'Page ' + ${peoplePage.number + 1} + ' of ' + ${peoplePage.totalPages}">Page</span>
+        <button type="button"
+                th:if="${peoplePage.hasNext()}"
+                th:attr="hx-get=@{/people/table(page=${peoplePage.number + 1})}"
+                hx-target="#people-table" hx-swap="outerHTML" hx-push-url="true">Next</button>
+    </nav>
+</div>
+</body>
+</html>
