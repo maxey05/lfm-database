@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: page('People', ~{::main})}">
+<body>
+<main>
+    <h1>People</h1>
+
+    <p class="empty" th:if="${#lists.isEmpty(people)}">No records yet.</p>
+
+    <table th:unless="${#lists.isEmpty(people)}">
+        <thead>
+            <tr>
+                <th>Complete Name</th>
+                <th>Email</th>
+                <th>Contact Number</th>
+                <th>Gender</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="person : ${people}">
+                <td th:text="${person.completeName}">Name</td>
+                <td th:text="${person.email}">Email</td>
+                <td th:text="${person.contactNumber}">Contact</td>
+                <td th:text="${person.gender}">Gender</td>
+            </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>
