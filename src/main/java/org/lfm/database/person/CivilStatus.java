@@ -4,7 +4,5 @@ public enum CivilStatus
 {
     SINGLE,
     MARRIED,
-    WIDOWED,
-    SEPARATED,
-    ANNULLED
+    WIDOWED
 }
