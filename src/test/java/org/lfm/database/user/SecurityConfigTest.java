@@ -133,8 +133,10 @@ class SecurityConfigTest {
     }
 
     @Test
-    void csrfProtectionStaysOnForEverythingElse() throws Exception {
-        mockMvc.perform(post("/people").with(user("staff").roles("STAFF")).with(csrf()))
-                .andExpect(status().isMethodNotAllowed());
+    void aValidCsrfTokenLetsTheSameRequestThrough() throws Exception {
+        mockMvc.perform(post("/people").with(user("staff").roles("STAFF")).with(csrf())
+                        .param("firstName", "")
+                        .param("lastName", ""))
+                .andExpect(status().isOk());
     }
 }
