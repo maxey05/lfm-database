@@ -95,6 +95,6 @@ class PersonListTest {
 
         mockMvc.perform(get("/people").with(user("viewer").roles("VIEWER")))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("No records yet.")));
+                .andExpect(content().string(containsString("No records match.")));
     }
 }
