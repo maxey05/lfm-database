@@ -3,37 +3,32 @@
 <body>
 <div th:fragment="table" id="people-table">
 
-    <p class="empty" th:if="${peoplePage.empty}">No records yet.</p>
+    <p class="empty" th:if="${peoplePage.empty}">No records match.</p>
 
     <table th:unless="${peoplePage.empty}">
         <thead>
             <tr>
-                <th>Complete Name</th>
-                <th>Email</th>
-                <th>Contact Number</th>
-                <th>Gender</th>
+                <th><button type="button" class="sort" data-sort="lastName">Complete Name</button></th>
+                <th><button type="button" class="sort" data-sort="email">Email</button></th>
+                <th><button type="button" class="sort" data-sort="contactNumber">Contact Number</button></th>
+                <th><button type="button" class="sort" data-sort="gender">Gender</button></th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="person : ${peoplePage.content}">
-                <td th:text="${person.completeName}">Name</td>
-                <td th:text="${person.email}">Email</td>
-                <td th:text="${person.contactNumber}">Contact</td>
-                <td th:text="${person.gender}">Gender</td>
-            </tr>
+            <th:block th:each="person : ${peoplePage.content}">
+                <tr th:replace="~{people/fragments/row :: row(${person})}"></tr>
+            </th:block>
         </tbody>
     </table>
 
-    <nav class="pagination" th:if="${peoplePage.totalPages gt 1}">
-        <button type="button"
-                th:if="${peoplePage.hasPrevious()}"
-                th:attr="hx-get=@{/people/table(page=${peoplePage.number - 1})}"
-                hx-target="#people-table" hx-swap="outerHTML" hx-push-url="true">Previous</button>
-        <span th:text="'Page ' + ${peoplePage.number + 1} + ' of ' + ${peoplePage.totalPages}">Page</span>
-        <button type="button"
-                th:if="${peoplePage.hasNext()}"
-                th:attr="hx-get=@{/people/table(page=${peoplePage.number + 1})}"
-                hx-target="#people-table" hx-swap="outerHTML" hx-push-url="true">Next</button>
+    <nav class="pagination">
+        <button type="button" data-page-step="-1"
+                th:if="${peoplePage.hasPrevious()}">Previous</button>
+        <span th:if="${peoplePage.totalPages gt 0}"
+              th:text="'Page ' + ${peoplePage.number + 1} + ' of ' + ${peoplePage.totalPages}">Page</span>
+        <button type="button" data-page-step="1"
+                th:if="${peoplePage.hasNext()}">Next</button>
+        <span class="count" th:text="${peoplePage.totalElements} + ' record(s)'">0 record(s)</span>
     </nav>
 </div>
 </body>
