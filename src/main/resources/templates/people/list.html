@@ -1,11 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{layout :: page('People', ~{::main})}">
 <body>
 <main>
-    <h1>People</h1>
+    <div class="page-head">
+        <h1>People</h1>
+        <button type="button" class="primary" id="add-person"
+                sec:authorize="hasRole('STAFF')"
+                th:hx-get="@{/people/new}"
+                hx-target="#modal" hx-swap="innerHTML">+ Add Person</button>
+    </div>
 
+    <div th:replace="~{people/fragments/filters :: filters}"></div>
     <div th:replace="~{people/fragments/table :: table}"></div>
+
+    <div id="modal"></div>
 </main>
 </body>
 </html>
