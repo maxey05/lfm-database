@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: page('Not found', ~{::main})}">
+<body>
+<main>
+    <h1>Not found</h1>
+    <p class="empty">That record does not exist, or it has been removed.</p>
+    <p><a th:href="@{/people}">Back to the list</a></p>
+</main>
+</body>
+</html>
