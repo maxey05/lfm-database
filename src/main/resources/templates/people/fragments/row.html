@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<table>
+<tbody>
+<tr th:fragment="row(person)"
+    th:id="'person-' + ${person.id}"
+    th:classappend="${person.archived} ? 'archived' : ''"
+    class="row-link"
+    tabindex="0"
+    th:hx-get="@{/people/{id}/modal(id=${person.id})}"
+    hx-target="#modal" hx-swap="innerHTML">
+    <td th:text="${person.completeName}">Name</td>
+    <td th:text="${person.email}">Email</td>
+    <td th:text="${person.contactNumber}">Contact</td>
+    <td th:text="${person.gender}">Gender</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
