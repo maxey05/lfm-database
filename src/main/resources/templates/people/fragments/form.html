@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="form" class="modal-backdrop" data-close-modal>
+    <div class="modal" role="dialog" aria-modal="true">
+        <header class="modal-head">
+            <h2 th:text="${mode == 'create'} ? 'Add Person' : 'Edit Person'">Person</h2>
+            <button type="button" class="icon" data-close-modal aria-label="Close">&times;</button>
+        </header>
+
+        <form th:if="${mode == 'create'}"
+              th:hx-post="@{/people}"
+              hx-target="#modal" hx-swap="innerHTML">
+            <div th:replace="~{people/fragments/form :: fields}"></div>
+        </form>
+
+        <form th:if="${mode == 'edit'}"
+              th:hx-put="@{/people/{id}(id=${personForm.id})}"
+              hx-target="#modal" hx-swap="innerHTML">
+            <div th:replace="~{people/fragments/form :: fields}"></div>
+        </form>
+    </div>
+</div>
+
+<div th:fragment="fields" th:object="${personForm}" class="person-form">
+
+    <div class="grid">
+        <label>First name
+            <input type="text" th:field="*{firstName}" required maxlength="100">
+            <span class="field-error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+        </label>
+
+        <label>Middle name
+            <input type="text" th:field="*{middleName}" maxlength="100">
+            <span class="field-error" th:if="${#fields.hasErrors('middleName')}" th:errors="*{middleName}"></span>
+        </label>
+
+        <label>Last name
+            <input type="text" th:field="*{lastName}" required maxlength="100">
+            <span class="field-error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+        </label>
+
+        <label>Nickname
+            <input type="text" th:field="*{nickname}" maxlength="60">
+            <span class="field-error" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}"></span>
+        </label>
+
+        <label>Email
+            <input type="email" th:field="*{email}" maxlength="255">
+            <span class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+        </label>
+
+        <label>Contact number
+            <input type="text" th:field="*{contactNumber}" maxlength="25" placeholder="09171234567">
+            <span class="field-error" th:if="${#fields.hasErrors('contactNumber')}" th:errors="*{contactNumber}"></span>
+        </label>
+
+        <label>Facebook name
+            <input type="text" th:field="*{facebookName}" maxlength="150">
+            <span class="field-error" th:if="${#fields.hasErrors('facebookName')}" th:errors="*{facebookName}"></span>
+        </label>
+
+        <label>Date of birth
+            <input type="date" th:field="*{dateOfBirth}">
+            <span class="field-error" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></span>
+        </label>
+
+        <label>Gender
+            <select th:field="*{gender}">
+                <option value="">Not stated</option>
+                <option th:each="g : ${genders}" th:value="${g}"
+                        th:text="${#strings.capitalizeWords(#strings.replace(#strings.toLowerCase(g), '_', ' '))}"></option>
+            </select>
+        </label>
+
+        <label>Civil status
+            <select th:field="*{civilStatus}">
+                <option value="">Not stated</option>
+                <option th:each="c : ${civilStatuses}" th:value="${c}"
+                        th:text="${#strings.capitalizeWords(#strings.toLowerCase(c))}"></option>
+            </select>
+        </label>
+
+        <label>Church satellite
+            <select th:field="*{satelliteId}">
+                <option value="">Not stated</option>
+                <option th:each="s : ${satellites}" th:value="${s.id}" th:text="${s.name}"></option>
+            </select>
+        </label>
+
+        <label class="checkbox inline">
+            <input type="checkbox" th:field="*{inDgroup}">
+            In a Dgroup
+        </label>
+
+        <label>Dgroup leader
+            <input type="text" th:field="*{dgroupLeaderName}" maxlength="150">
+            <span class="field-error" th:if="${#fields.hasErrors('dgroupLeaderName')}" th:errors="*{dgroupLeaderName}"></span>
+        </label>
+
+        <label>Dgroup leader contact
+            <input type="text" th:field="*{dgroupLeaderContact}" maxlength="25">
+            <span class="field-error" th:if="${#fields.hasErrors('dgroupLeaderContact')}" th:errors="*{dgroupLeaderContact}"></span>
+        </label>
+
+        <label>LFM group leader
+            <input type="text" th:field="*{lfmGroupLeaderName}" maxlength="150">
+            <span class="field-error" th:if="${#fields.hasErrors('lfmGroupLeaderName')}" th:errors="*{lfmGroupLeaderName}"></span>
+        </label>
+    </div>
+
+    <div class="modal-foot">
+        <button type="submit" class="primary">Save</button>
+        <button type="button" class="ghost" data-close-modal>Cancel</button>
+    </div>
+</div>
+
+</body>
+</html>
