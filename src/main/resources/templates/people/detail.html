@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout :: page('Person', ~{::main})}">
+<body>
+<main>
+    <div class="page-head">
+        <h1 th:text="${person.completeName}">Person</h1>
+        <a th:href="@{/people}">Back to the list</a>
+    </div>
+
+    <div class="card">
+        <div th:replace="~{people/fragments/detail :: card}"></div>
+    </div>
+</main>
+</body>
+</html>
