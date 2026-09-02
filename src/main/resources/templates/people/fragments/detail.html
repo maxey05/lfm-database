@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+<div th:fragment="modal" class="modal-backdrop" data-close-modal>
+    <div class="modal" role="dialog" aria-modal="true">
+        <header class="modal-head">
+            <h2 th:text="${person.completeName}">Name</h2>
+            <button type="button" class="icon" data-close-modal aria-label="Close">&times;</button>
+        </header>
+
+        <div th:replace="~{people/fragments/detail :: card}"></div>
+
+        <footer class="modal-foot">
+            <button type="button" sec:authorize="hasRole('STAFF')"
+                    th:hx-get="@{/people/{id}/edit(id=${person.id})}"
+                    hx-target="#modal" hx-swap="innerHTML">Edit</button>
+
+            <button type="button" class="danger"
+                    sec:authorize="hasRole('ADMIN')"
+                    th:if="${!person.archived}"
+                    th:hx-post="@{/people/{id}/archive(id=${person.id})}"
+                    hx-target="#modal" hx-swap="innerHTML">Archive</button>
+
+            <button type="button"
+                    sec:authorize="hasRole('ADMIN')"
+                    th:if="${person.archived}"
+                    th:hx-post="@{/people/{id}/restore(id=${person.id})}"
+                    hx-target="#modal" hx-swap="innerHTML">Restore</button>
+
+            <a class="permalink" th:href="@{/people/{id}(id=${person.id})}">Permalink</a>
+        </footer>
+    </div>
+</div>
+
+<div th:fragment="card" class="detail">
+    <p class="archived-banner" th:if="${person.archived}">This record is archived.</p>
+    <dl>
+        <dt>Complete Name</dt><dd th:text="${person.completeName}">—</dd>
+        <dt>Nickname</dt><dd th:text="${person.nickname}">—</dd>
+        <dt>Email</dt><dd th:text="${person.email}">—</dd>
+        <dt>Contact Number</dt><dd th:text="${person.contactNumber}">—</dd>
+        <dt>Facebook Name</dt><dd th:text="${person.facebookName}">—</dd>
+        <dt>Date of Birth</dt><dd th:text="${person.dateOfBirth}">—</dd>
+        <dt>Gender</dt><dd th:text="${person.gender}">—</dd>
+        <dt>Civil Status</dt><dd th:text="${person.civilStatus}">—</dd>
+        <dt>Church Satellite</dt><dd th:text="${person.satelliteName}">—</dd>
+        <dt>In a Dgroup</dt><dd th:text="${person.inDgroup}">—</dd>
+        <dt>Dgroup Leader</dt><dd th:text="${person.dgroupLeaderName}">—</dd>
+        <dt>Dgroup Leader Contact</dt><dd th:text="${person.dgroupLeaderContact}">—</dd>
+        <dt>LFM Group Leader</dt><dd th:text="${person.lfmGroupLeaderName}">—</dd>
+        <dt>Source</dt><dd th:text="${person.source}">—</dd>
+        <dt>Added</dt><dd th:text="${person.createdAt}">—</dd>
+        <dt>Last updated</dt><dd th:text="${person.updatedAt}">—</dd>
+    </dl>
+</div>
+
+</body>
+</html>
