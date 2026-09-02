@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="filters" class="filters-wrap">
+
+    <form id="filters"
+          th:hx-get="@{/people/table}"
+          hx-target="#people-table" hx-swap="outerHTML" hx-push-url="true"
+          hx-trigger="change, keyup from:#q delay:300ms, filters-changed, refresh-people from:body">
+
+        <input type="search" id="q" name="q" autofocus autocomplete="off"
+               placeholder="Search name, nickname, email, contact, Facebook…"
+               th:value="${criteria.q}">
+
+        <select name="satellite" id="satellite">
+            <option value="">Any satellite</option>
+            <option th:each="s : ${satellites}"
+                    th:value="${s.id}"
+                    th:text="${s.name}"
+                    th:selected="${criteria.satellite != null and criteria.satellite == s.id}"></option>
+        </select>
+
+        <select name="gender" id="gender">
+            <option value="">Any gender</option>
+            <option th:each="g : ${genders}"
+                    th:value="${g}"
+                    th:text="${#strings.capitalizeWords(#strings.replace(#strings.toLowerCase(g), '_', ' '))}"
+                    th:selected="${criteria.gender != null and criteria.gender == g}"></option>
+        </select>
+
+        <select name="civilStatus" id="civilStatus">
+            <option value="">Any civil status</option>
+            <option th:each="c : ${civilStatuses}"
+                    th:value="${c}"
+                    th:text="${#strings.capitalizeWords(#strings.toLowerCase(c))}"
+                    th:selected="${criteria.civilStatus != null and criteria.civilStatus == c}"></option>
+        </select>
+
+        <select name="inDgroup" id="inDgroup">
+            <option value="">Dgroup: any</option>
+            <option value="true" th:selected="${criteria.inDgroup != null and criteria.inDgroup}">In a Dgroup</option>
+            <option value="false" th:selected="${criteria.inDgroup != null and !criteria.inDgroup}">Not in a Dgroup</option>
+        </select>
+
+        <label class="checkbox">
+            <input type="checkbox" name="includeArchived" id="includeArchived" value="true"
+                   th:checked="${criteria.includeArchived}">
+            Show archived
+        </label>
+
+        <input type="hidden" name="sort" id="sort" th:value="${sortValue}">
+        <input type="hidden" name="page" id="page" th:value="${peoplePage.number}">
+        <input type="hidden" name="preset" id="preset" th:value="${criteria.preset}">
+    </form>
+
+    <div class="presets">
+        <button type="button" data-preset="birthdaysThisMonth"
+                th:classappend="${criteria.preset == 'birthdaysThisMonth'} ? 'on' : ''">Birthdays this month</button>
+        <button type="button" data-preset="notInDgroup"
+                th:classappend="${criteria.preset == 'notInDgroup'} ? 'on' : ''">Not in a Dgroup</button>
+        <button type="button" data-preset="noLeader"
+                th:classappend="${criteria.preset == 'noLeader'} ? 'on' : ''">No leader assigned</button>
+        <button type="button" data-preset="addedThisWeek"
+                th:classappend="${criteria.preset == 'addedThisWeek'} ? 'on' : ''">Added this week</button>
+        <button type="button" id="clear-filters" class="ghost">Clear all</button>
+    </div>
+</div>
+</body>
+</html>
